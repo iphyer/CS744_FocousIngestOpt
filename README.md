@@ -11,9 +11,9 @@ One of the key features of Focus is that it splits the video inference process i
 
 ## Task Summary
 
-In this course project, we want to optimize the ingest time of Focus system and in Focus, there are 2 neural networks, one is cheap ResetNet18 for {Frame number, Catergory} pair generation and another is more expensive Resetnet152 for more accurate {Frame number, Catergory} pair refining as shown in picture below.
+In this course project, we want to optimize the ingest time of Focus system and in Focus, there are 2 neural networks, one is cheap ResetNet18 for {Frame number, Catergory} pair generation and another is more expensive Resetnet152 for more accurate {Frame number, Catergory} pair refining as shown in picture below. We also show the planned improvements. 
 
-![layout of Focus](https://github.com/iphyer/IngestOptFocous_FinalProject_CS744Fall2018/blob/master/layoutFocus.png)
+![layout of Focus and planned improvements](https://github.com/iphyer/IngestOptFocous_FinalProject_CS744Fall2018/blob/master/layout.jpg)
 
 ### Task1 
 
@@ -34,7 +34,7 @@ No Training of either ResetNet here. We only use the pre-trained weights. Compar
 
 Fix ResetNet18 and train ResetNet152 to fine tune the expensive parts of the neural network.
 
-Using this trained ResetNet152 to generate {Frame number, Catergory} pair result.Compare this pre-trained alignment results with the benchmark. 
+Using this trained ResetNet152 to generate {Frame number, Catergory} pair result. Compare this pre-trained alignment results with the benchmark. 
 
 ### Task5
 
