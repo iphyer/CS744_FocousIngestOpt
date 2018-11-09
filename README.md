@@ -3,7 +3,7 @@ Video Inference System Optimization CS744Fall2018
 
 ## Introduction
 
-This is the Github repository for [CS 744 Fall 2018 of UW-Madison[(http://pages.cs.wisc.edu/~shivaram/cs744-fa18/) under Professor [Shivaram Venkataraman](http://shivaram.org/)'s instruction.
+This is the Github repository for [CS 744 Fall 2018 of UW-Madison](http://pages.cs.wisc.edu/~shivaram/cs744-fa18/) under Professor [Shivaram Venkataraman](http://shivaram.org/)'s instruction.
 
 We want to optimize the ingest time of Focus system. Focus is a video inference system that is published on the 13th USENIX Symposium on Operating Systems Design and Implementation (OSDI ’18), October 8–10, 2018, Carlsbad, CA, USA. For more details check [Focus: Querying Large Video Datasets with Low Latency and Low Cost](https://www.usenix.org/conference/osdi18/presentation/hsieh). 
 
