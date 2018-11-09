@@ -17,15 +17,15 @@ In this course project, we want to optimize the ingest time of Focus system and 
 
 ### Task1 
 
-Using ResetNet18 to build the cheap digest {Frame number, Catergory} pair result as the benchmark result.
+Using ResetNet18 to build the cheap digest **{Frame number, BBoxID,{BBox x1,y1,x2,y2}, Catergory}** pair result as the benchmark result.
 
 ### Task2 
 
-Using ResetNet152 to build the expensive digest {Frame number, Catergory} pair result as the ground truth result.
+Using ResetNet152 to build the expensive digest **{Frame number, BBoxID,{BBox x1,y1,x2,y2}, Catergory}** pair result as the ground truth result.
 
 ### Task3
 
-Try to align some layers of ResetNet18 and ResetNet152 or ResetNet34 for simplicity to prove that two ResetNet can be assembled together to make {Frame number, Catergory} pair result.
+Try to align some layers of ResetNet18 and ResetNet152 or ResetNet34 for simplicity to prove that two ResetNet can be assembled together to make  **{Frame number, BBoxID,{BBox x1,y1,x2,y2}, Catergory}**  pair result.
 
 No Training of either ResetNet here. We only use the pre-trained weights. Compare this pre-trained alignment results with the benchmark. 
 
@@ -34,7 +34,7 @@ No Training of either ResetNet here. We only use the pre-trained weights. Compar
 
 Fix ResetNet18 and train ResetNet152 to fine tune the expensive parts of the neural network.
 
-Using this trained ResetNet152 to generate {Frame number, Catergory} pair result. Compare this pre-trained alignment results with the benchmark. 
+Using this trained ResetNet152 to generate  **{Frame number, BBoxID,{BBox x1,y1,x2,y2}, Catergory}**  pair result. Compare this pre-trained alignment results with the benchmark. 
 
 ### Task5
 
