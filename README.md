@@ -15,6 +15,11 @@ In this course project, we want to optimize the ingest time of Focus system and 
 
 ![layout of Focus and planned improvements](https://github.com/iphyer/IngestOptFocous_FinalProject_CS744Fall2018/blob/master/layout.jpg)
 
+### Task 0
+
+We decide to use the videos provided by [Urban Tracker](https://www.jpjodoin.com/urbantracker/index.htm) to as the target video to study in this task. Urban Tracker is the companion web page for **[Urban Tracker: Multiple Object Tracking in Urban Mixed Traffic](https://ieeexplore.ieee.org/document/6836010)**. It contains annotated dataset, results, source code and tools. 
+
+
 ### Task1 
 
 Using ResetNet18 to build the cheap digest **{Frame number, BBoxID,{BBox x1,y1,x2,y2}, Catergory}** pair result as the benchmark result.
