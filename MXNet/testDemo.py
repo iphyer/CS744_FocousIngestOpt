@@ -2,9 +2,9 @@ import mxnet as mx
 import gluoncv
 
 # you can change it to your image filename
-filename = 'dataset/frame_616_patch_1.jpg'
+filename = 'c.jpg'
 # you may modify it to switch to another model. The name is case-insensitive
-model_name = 'yolo3_darknet53_voc'
+model_name = 'resnet152_v2'
 # download and load the pre-trained model
 net = gluoncv.model_zoo.get_model(model_name, pretrained=True)
 # load image
@@ -20,4 +20,5 @@ ind = mx.nd.topk(pred, k=5)[0].astype('int').asnumpy().tolist()
 # print the class name and predicted probability
 print('The input picture is classified to be')
 for i in range(5):
-    print('- [%s], with probability %.3f.'%(net.classes[ind[i]], prob[ind[i]]))
+    print('- [%s], with probability %.3f.' %
+          (net.classes[ind[i]], prob[ind[i]]))

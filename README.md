@@ -20,6 +20,16 @@ In this course project, we want to optimize the ingest time of Focus system and 
 We decide to use the videos provided by [Urban Tracker](https://www.jpjodoin.com/urbantracker/index.htm) to as the target video to study in this task. Urban Tracker is the companion web page for **[Urban Tracker: Multiple Object Tracking in Urban Mixed Traffic](https://ieeexplore.ieee.org/document/6836010)**. It contains annotated dataset, results, source code and tools. 
 
 
+### Task 0.1
+
+We found it is too hard to get our model to the best performance so we adjust the method to manually label all the patches to get the ground truth data set.
+
+We use the following convention to label the ground truth data set.
+
+* 0 : non sense background
+* 1 : cars
+* 2 : pedestrians 
+
 ### Task1 
 
 Using ResetNet18 to build the cheap digest **{Frame number, BBoxID,{BBox x1,y1,x2,y2}, Catergory}** pair result as the benchmark result.
