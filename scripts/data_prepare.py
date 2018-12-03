@@ -11,7 +11,7 @@ import random
 
 #resize images
 def resize_Images():
-    for filepath in glob.iglob('dataset/*.jpg'):
+    for filepath in glob.iglob('OLDdataset/*.jpg'):
         with open(filepath, 'r+b') as f:
             with Image.open(f) as image:
                 resized = resizeimage.resize_contain(image, [32, 32])
@@ -51,7 +51,7 @@ def load_Data():
 def load_batch():
     #image data
     imageCount = 0
-    for imagefile in glob.iglob('dataset/resized_dataset/*.jpg'):
+    for imagefile in glob.iglob('OLDdataset/resized_dataset/*.jpg'):
         imageCount += 1
     
     data = np.zeros((imageCount, 32, 32, 3))
@@ -59,7 +59,7 @@ def load_batch():
 
     index = 0
     
-    for imagefile in glob.iglob('dataset/resized_dataset/*.jpg'):
+    for imagefile in glob.iglob('OLDdataset/resized_dataset/*.jpg'):
         t = Image.open(imagefile)
         arr = np.array(t) #Convert test image into an array 32*32*3    
         data[index] = arr 
@@ -68,7 +68,7 @@ def load_batch():
     #labels
     labels = []
     #for filepath in glob.iglob(''):
-    with open('dataset/labels/all.txt') as csvfile:
+    with open('OLDdataset/labels/all.txt') as csvfile:
         lines = csvfile.readlines()
         for line in lines:
             labels.append(line.strip().split(',')[1])    
