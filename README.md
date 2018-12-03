@@ -11,16 +11,16 @@ One of the key features of Focus is that it splits the video inference process i
 
 ## Task Summary
 
-In this course project, we want to optimize the ingest time of Focus system and in Focus, there are 2 neural networks, one is cheap ResetNet18 for {Frame number, Catergory} pair generation and another is more expensive Resetnet152 for more accurate {Frame number, Catergory} pair refining as shown in picture below. We also show the planned improvements. 
+In this course project, we want to optimize the ingest time of Focus system and in Focus, there are 2 neural networks, one is cheap Resnet18 for {Frame number, Catergory} pair generation and another is more expensive Resnet152 for more accurate {Frame number, Catergory} pair refining as shown in picture below. We also show the planned improvements. 
 
-![layout of Focus and planned improvements](https://github.com/iphyer/IngestOptFocous_FinalProject_CS744Fall2018/blob/master/layout.jpg)
+![layout of Focus and planned improvements](https://github.com/iphyer/IngestOptFocous_FinalProject_CS744Fall2018/blob/master/Archive/layout.jpg)
 
 ### Task 0
 
 We decide to use the videos provided by [Urban Tracker](https://www.jpjodoin.com/urbantracker/index.htm) to as the target video to study in this task. Urban Tracker is the companion web page for **[Urban Tracker: Multiple Object Tracking in Urban Mixed Traffic](https://ieeexplore.ieee.org/document/6836010)**. It contains annotated dataset, results, source code and tools. 
 
 
-### Task 0.1
+### Task 0 - 1
 
 We found it is too hard to get our model to the best performance so we adjust the method to manually label all the patches to get the ground truth data set.
 
@@ -30,26 +30,28 @@ We use the following convention to label the ground truth data set.
 * 1 : cars
 * 2 : pedestrians 
 
-### Task1 
+### Task1 : Resnet 50 classification
 
-Using ResetNet18 to build the cheap digest **{Frame number, BBoxID,{BBox x1,y1,x2,y2}, Catergory}** pair result as the benchmark result.
+Sine the Resnet 50 shares the smame 14 begining layers with Resnet 152, we change Resnet 18 in Focus to Resnet 50 for our project.
 
-### Task2 
+Using Resnet 50 to build the cheap digest **{Frame_Number_Patch_Number.jpg, Catergory}** pair result as the benchmark result.
 
-Using ResetNet152 to build the expensive digest **{Frame number, BBoxID,{BBox x1,y1,x2,y2}, Catergory}** pair result as the ground truth result.
+### Task2 : Resnet 152 classification
 
-### Task3
+Using Resnet 152 to build the expensive digest **{Frame_Number_Patch_Number.jpg, Catergory}** pair result as the ground truth result.
 
-Try to align some layers of ResetNet18 and ResetNet152 or ResetNet34 for simplicity to prove that two ResetNet can be assembled together to make  **{Frame number, BBoxID,{BBox x1,y1,x2,y2}, Catergory}**  pair result.
+### Task3 : align Resnet 50 and Resnet 152 together
 
-No Training of either ResetNet here. We only use the pre-trained weights. Compare this pre-trained alignment results with the benchmark. 
+Try to align some layers of Resnet 50 and Resnet 152 for simplicity to prove that two Resnets can be assembled together to make  **{Frame_Number_Patch_Number.jpg, Catergory}**  pair result.
+
+No Training of either Resnet here. We only use the pre-trained weights. Compare this pre-trained alignment results with the benchmark. 
 
 
 ### Task4
 
-Fix ResetNet18 and train ResetNet152 to fine tune the expensive parts of the neural network.
+Fix Resnet 50 and train Resnet 152 to fine tune the expensive parts of the neural network.
 
-Using this trained ResetNet152 to generate  **{Frame number, BBoxID,{BBox x1,y1,x2,y2}, Catergory}**  pair result. Compare this pre-trained alignment results with the benchmark. 
+Using this trained Resnet 152 to generate  **{Frame_Number_Patch_Number.jpg, Catergory}**  pair result. Compare this pre-trained alignment results with the benchmark. 
 
 ### Task5
 
