@@ -9,9 +9,15 @@ import csv
 import codecs
 import random
 
+import re
+r = re.compile("\d+")
+def key1(a):
+    m = r.findall(a)
+    return int(m[0]), int(m[1])
+
 #resize images
 def resize_Images():
-    for filepath in glob.iglob('OLDdataset/*.jpg'):
+    for filepath in glob.iglob('dataset/*.jpg'):
         with open(filepath, 'r+b') as f:
             with Image.open(f) as image:
                 resized = resizeimage.resize_contain(image, [32, 32])
@@ -45,21 +51,23 @@ def load_Data():
 
     y_train = np.reshape(y_train, (len(y_train), 1))
     y_test = np.reshape(y_test, (len(y_test), 1))
-    
     return (x_train, y_train), (x_test, y_test)
 
 def load_batch():
     #image data
     imageCount = 0
-    for imagefile in glob.iglob('OLDdataset/resized_dataset/*.jpg'):
+    filelist = []
+    for imagefile in glob.iglob('dataset/resized_dataset/*.jpg'):
+        filelist.append(imagefile)
         imageCount += 1
-    
+
+    filelist.sort(key = key1)
     data = np.zeros((imageCount, 32, 32, 3))
     labels = np.zeros(imageCount)
-
     index = 0
-    
-    for imagefile in glob.iglob('OLDdataset/resized_dataset/*.jpg'):
+
+    for imagefile in filelist:
+	print(imagefile)
         t = Image.open(imagefile)
         arr = np.array(t) #Convert test image into an array 32*32*3    
         data[index] = arr 
@@ -68,7 +76,7 @@ def load_batch():
     #labels
     labels = []
     #for filepath in glob.iglob(''):
-    with open('OLDdataset/labels/all.txt') as csvfile:
+    with open('dataset/labels/all.txt') as csvfile:
         lines = csvfile.readlines()
         for line in lines:
             labels.append(line.strip().split(',')[1])    
