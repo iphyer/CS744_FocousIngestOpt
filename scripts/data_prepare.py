@@ -82,8 +82,3 @@ def load_batch():
             labels.append(line.strip().split(',')[1])    
     return data, labels
 
-
-
-
-
-load_Data()
