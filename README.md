@@ -1,6 +1,8 @@
 # IngestOptFocous_FinalProject_CS744Fall2018
 Video Inference System Optimization CS744Fall2018
 
+![Detailed Plan](https://github.com/iphyer/IngestOptFocous_FinalProject_CS744Fall2018/blob/master/Archive/plan.png)
+
 ## Introduction
 
 This is the Github repository for [CS 744 Fall 2018 of UW-Madison](http://pages.cs.wisc.edu/~shivaram/cs744-fa18/) under Professor [Shivaram Venkataraman](http://shivaram.org/)'s instruction.
