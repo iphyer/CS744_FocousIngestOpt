@@ -1,7 +1,7 @@
 # IngestOptFocous_FinalProject_CS744Fall2018
 Video Inference System Optimization CS744Fall2018
 
-![Detailed Plan](https://github.com/iphyer/IngestOptFocous_FinalProject_CS744Fall2018/blob/master/Archive/plan.png)
+![Detailed Plan](https://github.com/iphyer/IngestOptFocous_FinalProject_CS744Fall2018/blob/master/Archive/planLayout.png)
 
 ## Introduction
 
