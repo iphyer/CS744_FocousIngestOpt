@@ -1,6 +1,6 @@
 from PIL import Image
 import glob
-from resizeimage import resizeimage
+# from resizeimage import resizeimage
 from keras import backend as K
 from six.moves import cPickle
 from keras.datasets import cifar10
@@ -15,13 +15,13 @@ def key1(a):
     m = r.findall(a)
     return int(m[0]), int(m[1])
 
-#resize images
-def resize_Images():
-    for filepath in glob.iglob('dataset/*.jpg'):
-        with open(filepath, 'r+b') as f:
-            with Image.open(f) as image:
-                resized = resizeimage.resize_contain(image, [32, 32])
-                resized.save('resized/' + filepath, image.format)
+# #resize images
+# def resize_Images():
+#     for filepath in glob.iglob('dataset/*.jpg'):
+#         with open(filepath, 'r+b') as f:
+#             with Image.open(f) as image:
+#                 resized = resizeimage.resize_contain(image, [32, 32])
+#                 resized.save('resized/' + filepath, image.format)
 
 def load_Data():
     num_train_samples = 2274
@@ -42,12 +42,12 @@ def load_Data():
     x_test = []
     for index in range(num_train_samples):
         if index in random_choice:
-	    x_test.append(all_x[index])
-	else:
-	    x_train.append(all_x[index])
+            x_test.append(all_x[index])
+        else:
+            x_train.append(all_x[index])
 	
     x_train = np.array(x_train)
-    x_test = np.array(x_test)	
+    x_test = np.array(x_test)
 
     y_train = np.reshape(y_train, (len(y_train), 1))
     y_test = np.reshape(y_test, (len(y_test), 1))
@@ -67,7 +67,7 @@ def load_batch():
     index = 0
 
     for imagefile in filelist:
-	print(imagefile)
+        print(imagefile)
         t = Image.open(imagefile)
         arr = np.array(t) #Convert test image into an array 32*32*3    
         data[index] = arr 

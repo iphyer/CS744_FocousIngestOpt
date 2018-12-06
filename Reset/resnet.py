@@ -17,6 +17,7 @@ from keras.layers.merge import add
 from keras.layers.normalization import BatchNormalization
 from keras.regularizers import l2
 from keras import backend as K
+import numpy as np
 
 
 def _bn_relu(input):
@@ -180,6 +181,8 @@ def _get_block(identifier):
     return identifier
 
 
+
+
 class ResnetBuilder(object):
     @staticmethod
     def build(input_shape, num_outputs, block_fn, repetitions):
@@ -232,6 +235,57 @@ class ResnetBuilder(object):
         return model
 
     @staticmethod
+    def build_second_half(input_shape, num_outputs, block_fn, repetitions):
+        """Builds a custom ResNet like architecture.
+
+        Args:
+            input_shape: The input shape in the form (nb_channels, nb_rows, nb_cols)
+            num_outputs: The number of outputs at final softmax layer
+            block_fn: The block function to use. This is either `basic_block` or `bottleneck`.
+                The original paper used basic_block for layers < 50
+            repetitions: Number of repetitions of various block units.
+                At each block unit, the number of filters are doubled and the input size is halved
+
+        Returns:
+            The keras `Model`.
+        """
+        _handle_dim_ordering()
+        if len(input_shape) != 3:
+            raise Exception("Input shape should be a tuple (nb_channels, nb_rows, nb_cols)")
+
+        # Permute dimension order if necessary
+        # if K.image_dim_ordering() == 'tf':
+        #     input_shape = (input_shape[1], input_shape[2], input_shape[0])
+
+        # Load function from str if needed.
+        block_fn = _get_block(block_fn)
+
+        input = Input(shape=input_shape)
+        block = input
+        # conv1 = _conv_bn_relu(filters=64, kernel_size=(7, 7), strides=(2, 2))(input)
+        # pool1 = MaxPooling2D(pool_size=(3, 3), strides=(2, 2), padding="same")(conv1)
+
+        # block = pool1
+        filters = 128
+        for i, r in enumerate(repetitions):
+            block = _residual_block(block_fn, filters=filters, repetitions=r, is_first_layer=False)(block)
+            filters *= 2
+
+        # Last activation
+        block = _bn_relu(block)
+
+        # Classifier block
+        block_shape = K.int_shape(block)
+        pool2 = AveragePooling2D(pool_size=(block_shape[ROW_AXIS], block_shape[COL_AXIS]),
+                                 strides=(1, 1))(block)
+        flatten1 = Flatten()(pool2)
+        dense = Dense(units=num_outputs, kernel_initializer="he_normal",
+                      activation="softmax")(flatten1)
+
+        model = Model(inputs=input, outputs=dense)
+        return model
+
+    @staticmethod
     def build_resnet_18(input_shape, num_outputs):
         return ResnetBuilder.build(input_shape, num_outputs, basic_block, [2, 2, 2, 2])
 
@@ -250,3 +304,7 @@ class ResnetBuilder(object):
     @staticmethod
     def build_resnet_152(input_shape, num_outputs):
         return ResnetBuilder.build(input_shape, num_outputs, bottleneck, [3, 8, 36, 3])
+
+    @staticmethod
+    def build_resnet_152_second_half(input_shape, num_outputs):
+        return ResnetBuilder.build_second_half(input_shape, num_outputs, bottleneck, [8, 36, 3])

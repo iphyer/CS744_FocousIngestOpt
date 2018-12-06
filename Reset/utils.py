@@ -26,3 +26,13 @@ def plot_normal(img):
     fig = plt.figure(figsize=(8,8))
     ax = fig.add_subplot(6, 6, 3)
     ax.imshow(img)
+
+def batch_set_weights(model1, n_layer1, model2, n_layer2):
+    for i, j in zip(range(n_layer1, len(model1.layers)),range(n_layer2, len(model2.layers))):
+        model1.layers[i].set_weights(model2.layers[j].get_weights())
+
+def batch_compile(models):
+    for model in models:
+        model.compile(loss='categorical_crossentropy',
+              optimizer='adam',
+              metrics=['accuracy'])
