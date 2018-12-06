@@ -1,10 +1,10 @@
 from PIL import Image
 import glob
 import os
-from resizeimage import resizeimage
-from keras import backend as K
-from six.moves import cPickle
-from keras.datasets import cifar10
+#from resizeimage import resizeimage
+#from keras import backend as K
+#from six.moves import cPickle
+#from keras.datasets import cifar10
 import numpy as np
 import csv
 import codecs
@@ -22,7 +22,7 @@ def key1(a):
 
 #resize images
 def resize_Images():
-    for filepath in glob.iglob('dataset/original/*.jpg'):
+    for filepath in glob.iglob('data/original/*.jpg'):
         filename = os.path.basename(filepath)
 
         image = io.imread(filepath)
@@ -69,7 +69,7 @@ def load_batch():
     #image data
     imageCount = 0
     filelist = []
-    for imagefile in glob.iglob('dataset/resized224/*.jpg'):
+    for imagefile in glob.iglob('data/resized224/*.jpg'):
         filelist.append(imagefile)
         imageCount += 1
 
@@ -87,7 +87,7 @@ def load_batch():
     #labels
     labels = []
     #for filepath in glob.iglob(''):
-    with open('dataset/labels/all.txt') as csvfile:
+    with open('data/labels/all.txt') as csvfile:
         lines = csvfile.readlines()
         for line in lines:
             labels.append(line.strip().split(',')[1])    
