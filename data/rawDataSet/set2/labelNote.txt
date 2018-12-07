@@ -1,5 +1,0 @@
-The 3 images needs to be taken care of because they all show the full size image instead of the patches of interest.
-
-frame_335_patch_30.jpg
-frame_336_patch_29.jpg
-frame_337_patch_31.jpg

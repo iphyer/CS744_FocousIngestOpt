@@ -1,7 +1,7 @@
 # IngestOptFocous_FinalProject_CS744Fall2018
 Video Inference System Optimization CS744Fall2018
 
-![Detailed Plan](https://github.com/iphyer/IngestOptFocous_FinalProject_CS744Fall2018/blob/master/Archive/planLayout.png)
+![Detailed Plan](https://github.com/iphyer/IngestOptFocous_FinalProject_CS744Fall2018/blob/master/images/planLayout.png)
 
 ## Introduction
 
@@ -15,7 +15,7 @@ One of the key features of Focus is that it splits the video inference process i
 
 In this course project, we want to optimize the ingest time of Focus system and in Focus, there are 2 neural networks, one is cheap Resnet18 for {Frame number, Catergory} pair generation and another is more expensive Resnet152 for more accurate {Frame number, Catergory} pair refining as shown in picture below. We also show the planned improvements. 
 
-![layout of Focus and planned improvements](https://github.com/iphyer/IngestOptFocous_FinalProject_CS744Fall2018/blob/master/Archive/layout.jpg)
+![layout of Focus and planned improvements](https://github.com/iphyer/IngestOptFocous_FinalProject_CS744Fall2018/blob/master/images/layout.jpg)
 
 ### Task 0
 
