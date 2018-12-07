@@ -15,10 +15,12 @@ import re
 
 image_size = 224
 
-r = re.compile("\d+")
+r1 = re.compile("frame_(\d+)")
+r2 = re.compile("patch_(\d+)")
 def key1(a):
-    m = r.findall(a)
-    return int(m[0]), int(m[1])
+    m1 = r1.findall(a)
+    m2 = r2.findall(a)
+    return int(m1[0]), int(m2[0])
 
 #resize images
 def resize_Images():
