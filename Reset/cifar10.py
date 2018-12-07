@@ -11,6 +11,7 @@ from keras.preprocessing.image import ImageDataGenerator
 from keras.utils import np_utils
 from keras.callbacks import ReduceLROnPlateau, CSVLogger, EarlyStopping
 import data_prepare as dp
+from keras.models import Model
 
 
 import numpy as np
@@ -27,7 +28,7 @@ nb_epoch = 1
 data_augmentation = False
 
 # input image dimensions
-img_rows, img_cols = 32, 32
+img_rows, img_cols = 224, 224
 # The CIFAR10 images are RGB.
 img_channels = 3
 
@@ -48,32 +49,41 @@ X_test -= mean_image
 X_train /= 128.
 X_test /= 128.
 
-model = resnet.ResnetBuilder.build_resnet_50((img_channels, img_rows, img_cols), nb_classes)
-model.load_weights("model/weights/50weights.h5")
+# build and load weights for resnet 50
+model_50 = resnet.ResnetBuilder.build_resnet_50((img_channels, img_rows, img_cols), nb_classes)
+model_50.load_weights("model/weights/50weights.h5")
 
 # model.save('model/modelfile')
 # model.compile(loss='categorical_crossentropy',
 #               optimizer='adam',
 #               metrics=['accuracy'])
 
-intermediate_shape = (8, 8, 256)
-entry_point = 34
 
+# set intermediate input shape and build second half model for reset 152
+intermediate_shape = (8, 8, 256)
+output_layer = 33
+input_layer = 34
 
 model_second_half = resnet.ResnetBuilder.build_resnet_152_second_half(intermediate_shape, nb_classes)
 
+#build and load weights for resnet 152
 model_152 = resnet.ResnetBuilder.build_resnet_152((img_channels, img_rows, img_cols), nb_classes)
 model_152.load_weights("model/weights/152weights.h5")
 
+
+#method for load weights into sec_half model
 def batch_set_weights(model1, n_layer1, model2, n_layer2):
     for i, j in zip(range(n_layer1, len(model1.layers)),range(n_layer2, len(model2.layers))):
         model1.layers[i].set_weights(model2.layers[j].get_weights())
         print(i,j)
 
+batch_set_weights(model_second_half, 1, model_152, input_layer)
+model_second_half.save("model/model/second_half.h5")
+model_second_half.save_weights("model/weights/second_half_weights.h5")
 
-batch_set_weights(model_second_half, 1, model_152, entry_point)
-
-
+intermediate_layer_model = Model(inputs=model_50.input,
+                                 outputs=model_50.layers[output_layer].output)
+feature_map = intermediate_layer_model.predict(X_test)
 
 
 #

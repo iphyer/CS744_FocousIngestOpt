@@ -1,5 +1,6 @@
 from __future__ import division
 
+
 import six
 from keras.models import Model
 from keras.layers import (

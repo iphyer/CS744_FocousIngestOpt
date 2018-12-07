@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from keras.models import Model
 
+
 def plot(model, layer_name, test_data):
     intermediate_layer_model = Model(inputs=model.input,
                                      outputs=model.get_layer(layer_name).output)
