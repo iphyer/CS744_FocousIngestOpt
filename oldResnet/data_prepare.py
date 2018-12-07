@@ -78,7 +78,8 @@ def load_batch():
     labels = np.zeros(imageCount)
     index = 0
 
-    for imagefile in filelist:
+    for counter, imagefile in enumerate(filelist):
+        print(str(counter + 1) + 'load image file: ' + imagefile)
         t = Image.open(imagefile)
         arr = np.array(t) #Convert test image into an array 32*32*3    
         data[index] = arr 
@@ -92,3 +93,5 @@ def load_batch():
         for line in lines:
             labels.append(line.strip().split(',')[1])    
     return data, labels
+
+load_Data()
