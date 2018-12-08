@@ -1,16 +1,12 @@
 #from PIL import Image
 import glob
 import os
-#from resizeimage import resizeimage
-#from keras import backend as K
-#from six.moves import cPickle
-#from keras.datasets import cifar10
 import numpy as np
 import csv
-#import codecs
 import random
 from skimage.transform import resize
 from skimage import io
+from sklearn.model_selection import train_test_split
 import re
 
 image_size = 224
@@ -38,34 +34,11 @@ def resize_Images():
         
 
 def load_Data():
-    num_train_samples = 2273
-    testset_size = 450
-
-    x_train = np.empty((num_train_samples, image_size, image_size, 3), dtype='uint8')
-    y_train = np.empty((num_train_samples,), dtype='uint8')
-
-    (all_x, all_y) = load_batch()
-
-    random.seed(10)
-    random_choice = random.sample(range(num_train_samples), testset_size)
-    rest = np.setdiff1d(range(num_train_samples), random_choice)
-  
-    y_test = np.take(all_y, random_choice)
-    y_train = np.take(all_y, rest)
     
-    x_train = []
-    x_test = []
-    for index in range(num_train_samples):
-        if index in random_choice:
-            x_test.append(all_x[index])
-        else:
-            x_train.append(all_x[index])
-	
-    x_train = np.array(x_train)
-    x_test = np.array(x_test)	
-
-    y_train = np.reshape(y_train, (len(y_train), 1))
-    y_test = np.reshape(y_test, (len(y_test), 1))
+    (x_all, y_all) = load_batch()
+    x_all = np.array(x_all)
+    y_all = np.array(y_all)
+    x_train, x_test, y_train, y_test = train_test_split(x_all, y_all, test_size=0.2, random_state=10)    
     return (x_train, y_train), (x_test, y_test)
 
 def load_batch():
@@ -82,7 +55,7 @@ def load_batch():
     index = 0
 
     for counter, imagefile in enumerate(filelist):
-        print(str(counter + 1) + 'load image file: ' + imagefile)
+        #print(str(counter + 1) + 'load image file: ' + imagefile)
         t = Image.open(imagefile)
         arr = np.array(t) #Convert test image into an array 32*32*3    
         data[index] = arr 
