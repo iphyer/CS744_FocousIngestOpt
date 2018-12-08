@@ -37,3 +37,4 @@ def batch_compile(models):
         model.compile(loss='categorical_crossentropy',
               optimizer='adam',
               metrics=['accuracy'])
+
