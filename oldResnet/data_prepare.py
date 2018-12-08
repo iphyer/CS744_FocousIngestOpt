@@ -1,4 +1,4 @@
-from PIL import Image
+#from PIL import Image
 import glob
 import os
 #from resizeimage import resizeimage
@@ -7,7 +7,7 @@ import os
 #from keras.datasets import cifar10
 import numpy as np
 import csv
-import codecs
+#import codecs
 import random
 from skimage.transform import resize
 from skimage import io
@@ -95,9 +95,3 @@ def load_batch():
         for line in lines:
             labels.append(line.strip().split(',')[1])    
     return data, labels
-
-<<<<<<< HEAD:Reset/data_prepare.py
-# load_Data()
-=======
-load_Data()
->>>>>>> 663d13dd08abe400d1b4df1691f6eb734834c3a5:oldResnet/data_prepare.py
