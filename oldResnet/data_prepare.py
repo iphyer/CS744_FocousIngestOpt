@@ -1,4 +1,4 @@
-#from PIL import Image
+from PIL import Image
 import glob
 import os
 #from resizeimage import resizeimage
