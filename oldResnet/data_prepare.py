@@ -46,6 +46,7 @@ def load_Data():
 
     (all_x, all_y) = load_batch()
 
+    random.seed(10)
     random_choice = random.sample(range(num_train_samples), testset_size)
     rest = np.setdiff1d(range(num_train_samples), random_choice)
   
