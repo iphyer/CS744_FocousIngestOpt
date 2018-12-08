@@ -60,7 +60,7 @@ model_50.load_weights("model/weights/50weights.h5")
 
 
 # set intermediate input shape and build second half model for reset 152
-intermediate_shape = (8, 8, 256)
+intermediate_shape = (56, 56, 256)
 output_layer = 33
 input_layer = 34
 
@@ -77,15 +77,17 @@ def batch_set_weights(model1, n_layer1, model2, n_layer2):
         model1.layers[i].set_weights(model2.layers[j].get_weights())
         print(i,j)
 
-batch_set_weights(model_second_half, 1, model_152, input_layer)
-model_second_half.save("model/model/second_half.h5")
-model_second_half.save_weights("model/weights/second_half_weights.h5")
+# batch_set_weights(model_second_half, 1, model_152, input_layer)
+# model_second_half.save("model/model/second_half.h5")
+model_second_half.load_weights("model/weights/second_half_weights.h5")
+
+
 
 intermediate_layer_model = Model(inputs=model_50.input,
                                  outputs=model_50.layers[output_layer].output)
 feature_map = intermediate_layer_model.predict(X_test)
 
-
+model_second_half.predict(feature_map)
 #
 # if not data_augmentation:
 #     print('Not using data augmentation.')
