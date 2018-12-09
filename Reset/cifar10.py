@@ -92,12 +92,23 @@ output_path = "model/feature_map/"
 np.save(output_path + "feature_map_train.npy", feature_map_train)
 np.save(output_path + "feature_map_test.npy", feature_map_test)
 
+# np.savez_compressed(output_path + "feature_map_train.npy", feature_map_train)
+# np.savez_compressed(output_path + "feature_map_test.npy", feature_map_test)
+
+model_second_half.compile(loss='categorical_crossentropy',
+              optimizer='adam',
+              metrics=['accuracy'])
+
+# train second half model using feature_map_train
 model_second_half.fit(feature_map_train, Y_train,
           batch_size=batch_size,
           nb_epoch=nb_epoch,
           validation_data=(feature_map_test, Y_test),
           shuffle=True,
           callbacks=[lr_reducer, early_stopper, csv_logger])
+
+model_second_half.save_weights("model/weights/second_half_retrained.h5")
+loss, acc = model_second_half.evaluate(feature_map_test, Y_test)
 
 # pred = model_second_half.predict(feature_map)
 #
