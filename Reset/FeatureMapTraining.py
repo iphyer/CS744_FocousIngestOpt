@@ -50,8 +50,8 @@ X_train /= 128.
 X_test /= 128.
 
 # build and load weights for resnet 50
-model_50 = resnet.ResnetBuilder.build_resnet_50((img_channels, img_rows, img_cols), nb_classes)
-model_50.load_weights("model/weights/50weights.h5")
+# model_50 = resnet.ResnetBuilder.build_resnet_50((img_channels, img_rows, img_cols), nb_classes)
+# model_50.load_weights("model/weights/50weights.h5")
 
 # model.save('model/modelfile')
 # model.compile(loss='categorical_crossentropy',
@@ -67,8 +67,8 @@ input_layer = 34
 model_second_half = resnet.ResnetBuilder.build_resnet_152_second_half(intermediate_shape, nb_classes)
 
 #build and load weights for resnet 152
-model_152 = resnet.ResnetBuilder.build_resnet_152((img_channels, img_rows, img_cols), nb_classes)
-model_152.load_weights("model/weights/152weights.h5")
+# model_152 = resnet.ResnetBuilder.build_resnet_152((img_channels, img_rows, img_cols), nb_classes)
+# model_152.load_weights("model/weights/152weights.h5")
 
 
 #method for load weights into sec_half model
@@ -77,27 +77,40 @@ def batch_set_weights(model1, n_layer1, model2, n_layer2):
         model1.layers[i].set_weights(model2.layers[j].get_weights())
         print(i,j)
 
-# batch_set_weights(model_second_half, 1, model_152, input_layer)
-# model_second_half.save("model/model/second_half.h5")
-model_second_half.load_weights("model/weights/second_half_weights.h5")
+# # batch_set_weights(model_second_half, 1, model_152, input_layer)
+# # model_second_half.save("model/model/second_half.h5")
+# model_second_half.load_weights("model/weights/second_half_weights.h5")
 
 
 
-intermediate_layer_model = Model(inputs=model_50.input,
-                                 outputs=model_50.layers[output_layer].output)
+# intermediate_layer_model = Model(inputs=model_50.input,
+#                                  outputs=model_50.layers[output_layer].output)
 
-feature_map_train = intermediate_layer_model.predict(X_train)
-feature_map_test = intermediate_layer_model.predict(X_test)
-output_path = "model/feature_map/"
-np.save(output_path + "feature_map_train.npy", feature_map_train)
-np.save(output_path + "feature_map_test.npy", feature_map_test)
+feature_map_train = np.load("model/feature_map/feature_map_train.npy")
+feature_map_test =  np.load("model/feature_map/feature_map_test.npy")
+#feature_map_train = intermediate_layer_model.predict(X_train)
+#feature_map_test = intermediate_layer_model.predict(X_test)
+# output_path = "model/feature_map/"
+# np.save(output_path + "feature_map_train.npy", feature_map_train)
+# np.save(output_path + "feature_map_test.npy", feature_map_test)
 
+# np.savez_compressed(output_path + "feature_map_train.npy", feature_map_train)
+# np.savez_compressed(output_path + "feature_map_test.npy", feature_map_test)
+
+model_second_half.compile(loss='categorical_crossentropy',
+              optimizer='adam',
+              metrics=['accuracy'])
+
+# train second half model using feature_map_train
 model_second_half.fit(feature_map_train, Y_train,
           batch_size=batch_size,
           nb_epoch=nb_epoch,
           validation_data=(feature_map_test, Y_test),
           shuffle=True,
           callbacks=[lr_reducer, early_stopper, csv_logger])
+
+model_second_half.save_weights("model/weights/second_half_retrained.h5")
+loss, acc = model_second_half.evaluate(feature_map_test, Y_test)
 
 # pred = model_second_half.predict(feature_map)
 #
