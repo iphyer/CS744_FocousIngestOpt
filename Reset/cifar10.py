@@ -95,6 +95,10 @@ np.save(output_path + "feature_map_test.npy", feature_map_test)
 # np.savez_compressed(output_path + "feature_map_train.npy", feature_map_train)
 # np.savez_compressed(output_path + "feature_map_test.npy", feature_map_test)
 
+model_second_half.compile(loss='categorical_crossentropy',
+              optimizer='adam',
+              metrics=['accuracy'])
+
 # train second half model using feature_map_train
 model_second_half.fit(feature_map_train, Y_train,
           batch_size=batch_size,
