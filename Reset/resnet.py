@@ -94,20 +94,20 @@ def _shortcut(input, residual):
     return add([shortcut, residual])
 
 
-def _residual_block(block_function, filters, repetitions, is_first_layer=False):
+def _residual_block(block_function, filters, repetitions, is_first_layer=False, middle_cut=False):
+
     """Builds a residual block with repeating bottleneck blocks.
     """
     def f(input):
         for i in range(repetitions):
             init_strides = (1, 1)
-            if i == 0 and not is_first_layer:
+            if i == 0 and not is_first_layer and not middle_cut:
                 init_strides = (2, 2)
             input = block_function(filters=filters, init_strides=init_strides,
                                    is_first_block_of_first_layer=(is_first_layer and i == 0))(input)
         return input
 
     return f
-
 
 def basic_block(filters, init_strides=(1, 1), is_first_block_of_first_layer=False):
     """Basic 3 X 3 convolution blocks for use on resnets with layers <= 34.
@@ -236,7 +236,7 @@ class ResnetBuilder(object):
         return model
 
     @staticmethod
-    def build_second_half(input_shape, num_outputs, block_fn, repetitions):
+    def build_second_half(input_shape, num_outputs, block_fn, repetitions, middle_cut=False):
         """Builds a custom ResNet like architecture.
 
         Args:
@@ -269,7 +269,7 @@ class ResnetBuilder(object):
         # block = pool1
         filters = 128
         for i, r in enumerate(repetitions):
-            block = _residual_block(block_fn, filters=filters, repetitions=r, is_first_layer=False)(block)
+            block = _residual_block(block_fn, filters=filters, repetitions=r, is_first_layer=False, middle_cut=(middle_cut and i==0))(block)
             filters *= 2
 
         # Last activation
@@ -299,6 +299,10 @@ class ResnetBuilder(object):
         return ResnetBuilder.build(input_shape, num_outputs, bottleneck, [3, 4, 6, 3])
 
     @staticmethod
+    def build_resnet_50_second_half(input_shape, num_outputs):
+        return ResnetBuilder.build_second_half(input_shape, num_outputs, bottleneck, [4, 6, 3])
+
+    @staticmethod
     def build_resnet_101(input_shape, num_outputs):
         return ResnetBuilder.build(input_shape, num_outputs, bottleneck, [3, 4, 23, 3])
 
@@ -309,3 +313,8 @@ class ResnetBuilder(object):
     @staticmethod
     def build_resnet_152_second_half(input_shape, num_outputs):
         return ResnetBuilder.build_second_half(input_shape, num_outputs, bottleneck, [8, 36, 3])
+
+    @staticmethod
+    def build_resnet_152_second_half_2(input_shape, num_outputs):
+        return ResnetBuilder.build_second_half(input_shape, num_outputs, bottleneck, [4, 36, 3], middle_cut=True)
+

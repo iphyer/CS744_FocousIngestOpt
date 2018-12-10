@@ -52,46 +52,43 @@ X_test /= 128.
 
 
 
-# # build and load weights for resnet 50
-# model_50 = resnet.ResnetBuilder.build_resnet_50((img_channels, img_rows, img_cols), nb_classes)
-# model_50.load_weights("model/weights/50weights.h5")
-#
-# #build and load weights for resnet 152
-# model_152 = resnet.ResnetBuilder.build_resnet_152((img_channels, img_rows, img_cols), nb_classes)
-# model_152.load_weights("model/weights/152weights.h5")
+# build and load weights for resnet 50
+model_50 = resnet.ResnetBuilder.build_resnet_50((img_channels, img_rows, img_cols), nb_classes)
+model_50.load_weights("model/weights/50weights.h5")
+
+#build and load weights for resnet 152
+model_152 = resnet.ResnetBuilder.build_resnet_152((img_channels, img_rows, img_cols), nb_classes)
+model_152.load_weights("model/weights/152weights.h5")
 
 # set intermediate input shape and build second half model for reset 152
-intermediate_shape = (56, 56, 256)
-output_layer = 33
-input_layer = 34
+intermediate_shape = (28, 28, 512)
+output_layer = 74
+input_layer = 75
 
-model_152_second_half = resnet.ResnetBuilder.build_resnet_152_second_half(intermediate_shape, nb_classes)
-model_50_second_half = resnet.ResnetBuilder.build_resnet_50_second_half(intermediate_shape, nb_classes)
+model_152_second_half = resnet.ResnetBuilder.build_resnet_152_second_half_2(intermediate_shape, nb_classes)
+# model_50_second_half = resnet.ResnetBuilder.build_resnet_50_second_half(intermediate_shape, nb_classes)
 
 #method for load weights into sec_half model
-# def batch_set_weights(model1, n_layer1, model2, n_layer2):
-#     for i, j in zip(range(n_layer1, len(model1.layers)),range(n_layer2, len(model2.layers))):
-#         model1.layers[i].set_weights(model2.layers[j].get_weights())
-#         print(i,j)
+def batch_set_weights(model1, n_layer1, model2, n_layer2):
+    for i, j in zip(range(n_layer1, len(model1.layers)),range(n_layer2, len(model2.layers))):
+        model1.layers[i].set_weights(model2.layers[j].get_weights())
+        print(i,j)
 
 # batch_set_weights(model_50_second_half, 1, model_50, input_layer)
 # model_50_second_half.save_weights("model/weights/50_second_half.h5")
 
-# batch_set_weights(model_152_second_half, 1, model_152, input_layer)
-# model_second_half.save("model/model/second_half.h5")
+batch_set_weights(model_152_second_half, 1, model_152, input_layer)
+model_152_second_half.save("model/model/second_half.h5")
 
-model_50_second_half.load_weights("model/weights/50_second_half.h5")
-model_152_second_half.load_weights("model/weights/second_half_retrained.h5")
-
+# model_50_second_half.load_weights("model/weights/50_second_half.h5")
+# model_152_second_half.load_weights("model/weights/second_half_retrained.h5")
 
 
 intermediate_layer_model = Model(inputs=model_50.input,
                                  outputs=model_50.layers[output_layer].output)
 
-# feature_map_train = intermediate_layer_model.predict(X_train)
-# start_time = time.time()
-# feature_map_test = intermediate_layer_model.predict(X_test)
-# print("--- %s seconds ---" % (time.time() - start_time))
+feature_map_train = intermediate_layer_model.predict(X_train)
+feature_map_test = intermediate_layer_model.predict(X_test)
 
 # output_path = "model/feature_map/"
 # np.save(output_path + "feature_map_train.npy", feature_map_train)
@@ -105,7 +102,7 @@ def batch_compile(models):
                  optimizer='adam',
                  metrics=['accuracy'])
 
-batch_compile([model_50, model_152, model_50_second_half, model_152_second_half])
+# batch_compile([model_50, model_152, model_50_second_half, model_152_second_half])
 
 # train second half model using feature_map_train
 # model_second_half.fit(feature_map_train, Y_train,
@@ -134,24 +131,25 @@ n_inference = 5
 # time1 = time.time() - start_time
 # print("------------ %s rounds of inference took %s seconds ------------" % (n_inference, time1))
 
+#
+# print("------------ TEST 2: feature map + partial resnet 50 + 152 -------------")
+# start_time = time.time()
+# for i in range(n_inference):
+#     print("ROUND %s:" % (i))
+#     round_start = time.time()
+#     feature_map_test = intermediate_layer_model.predict(X_test)
+#     curr_time = time.time()
+#     print("feature map finished in % seconds" % (curr_time - round_start))
+#     curr_time = time.time()
+#     model_50_second_half.predict(feature_map_test)
+#     print("partial 50 finished in % seconds" % (time.time() - curr_time))
+#     curr_time = time.time()
+#     model_152_second_half.predict(feature_map_test)
+#     print("partial 50 finished in % seconds" % (time.time() - curr_time))
+#     print("round total time: %s seconds" % (time.time() - round_start))
+# time2 = time.time() - start_time
+# print("------------ %s rounds of inference took %s seconds ------------" % (n_inference, time2))
 
-print("------------ TEST 2: feature map + partial resnet 50 + 152 -------------")
-start_time = time.time()
-for i in range(n_inference):
-    print("ROUND %s:" % (i))
-    round_start = time.time()
-    feature_map_test = intermediate_layer_model.predict(X_test)
-    curr_time = time.time()
-    print("feature map finished in % seconds" % (curr_time - round_start))
-    curr_time = time.time()
-    model_50_second_half.predict(feature_map_test)
-    print("partial 50 finished in % seconds" % (time.time() - curr_time))
-    curr_time = time.time()
-    model_152_second_half.predict(feature_map_test)
-    print("partial 50 finished in % seconds" % (time.time() - curr_time))
-    print("round total time: %s seconds" % (time.time() - round_start))
-time2 = time.time() - start_time
-print("------------ %s rounds of inference took %s seconds ------------" % (n_inference, time2))
 # print("time diff: %s" % (time1 - time2))
 
 # pred = model_second_half.predict(feature_map)
