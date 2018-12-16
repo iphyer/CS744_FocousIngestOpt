@@ -59,3 +59,6 @@ Using this trained Resnet 152 to generate  **{Frame_Number_Patch_Number.jpg, Cat
 
 If we still have time, we plan to explore better clustering algorithm for patches clustering rather than the naive implementation used in Focus. 
 
+## Final Report
+
+You can check the final report here, [final report]().
