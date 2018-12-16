@@ -67,4 +67,4 @@ You can check the final report here, [final report]().
 
 You can also read the project post to get the main idea of this project.
 
-![poster](./images/poster_group_6.png)
+![poster](./images/poster_group_6.jpg)
