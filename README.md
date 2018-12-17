@@ -61,7 +61,7 @@ If we still have time, we plan to explore better clustering algorithm for patche
 
 ## Final Report
 
-You can check the final report here, [final report]().
+You can check the final report here, [final report](./FinalReport/Final_Report_744_Group_6.pdf).
 
 ## Project Poster
 
