@@ -3,6 +3,12 @@ Video Inference System Optimization CS744Fall2018
 
 ![Detailed Plan](https://github.com/iphyer/IngestOptFocous_FinalProject_CS744Fall2018/blob/master/images/Picture1.png)
 
+## Project Poster
+
+You can read the project post to get the main idea of this project.
+
+![poster](./images/poster_group_6.jpg)
+
 ## Introduction
 
 This is the Github repository for [CS 744 Fall 2018 of UW-Madison](http://pages.cs.wisc.edu/~shivaram/cs744-fa18/) under Professor [Shivaram Venkataraman](http://shivaram.org/)'s instruction.
@@ -63,8 +69,3 @@ If we still have time, we plan to explore better clustering algorithm for patche
 
 You can check the final report here, [final report](./FinalReport/Final_Report_744_Group_6.pdf).
 
-## Project Poster
-
-You can also read the project post to get the main idea of this project.
-
-![poster](./images/poster_group_6.jpg)
